@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <H1>Creacion de una database con python</H1>
+
+    <p>
+        primero se importan las librerias que vamos a usar <br>
+        luego creamos una funcion que haga la conecte a la db en caso de no existir la crea <br>
+    </p>
+    <p>
+        import time<br>
+        import sqlite3 as sql<br>
+        def createDb():<br>
+        conn = sql.connect("autoconocimiento.db")<br>
+        print("Base de datos de autoconocimiento creada")<br>
+        conn.commit()<br>
+        conn.close();<br>
+    </p>
+    <img src="Captura de pantalla 2024-12-03 162433.png" alt="">
+
+    
+    <h1>Creacion de una tabla con python</h1>
+
+    <p>
+        al igual que en anterior importamos libreria y luego creamos una funcion que genere la tabla
+    </p>
+    <p>
+        import time<br>
+        import sqlite3 as sql <br>
+        def createTeable():<br>
+        conn=sql.connect("autoconocimiento.db")<br>
+        cursor= conn.cursor()<br>
+        cursor.execute("""<br>
+        CREATE TABLE strategic_impact (<br>
+        impact_id INTEGER PRIMARY KEY AUTOINCREMENT,<br>
+        plan_id INTEGER,<br>
+        impact_area TEXT,<br>
+        expected_outcome TEXT,<br>
+        actual_outcome TEXT,<br>
+        impact_score INTEGER CHECK (impact_score BETWEEN 1 AND 10),<br>
+        FOREIGN KEY (plan_id) REFERENCES strategic_plan(plan_id)<br>
+        );<br>
+        """)<br>
+        conn.commit()<br>
+        print("Tabla creada")<br>
+        conn.close()<br>
+    </p>
+    <img src="Captura de pantalla 2024-12-03 162755.png" alt="">
+
+    <p>
+
+    </p>
+
+
+    <h1>Insercion de un registro en la db por python</h1>
+
+    <p>
+        por medio de funciones hacemos una ejecucion sql para hacer un insert en nuestra tabla de impacto estrategico
+    </p>
+    <p>
+    try:<br>
+        conn = sql.connect("autoconocimientoJesusAldayrRamirezErazo.db") <br>
+        <br>
+        cursor = conn.cursor()<br>
+        cursor.execute("""<br>
+        INSERT INTO strategic_impact (impact_id,plan_id, impact_area, expected_outcome, actual_outcome, impact_score)<br>
+        VALUES (?, ?, ?, ?, ?, ?);<br>
+        """, (impact_id, plan_id, impact_area, expected_outcome, actual_outcome, impact_score))<br>
+        conn.commit()<br>
+        print("Registro insertado correctamente")<br>
+    except sql.Error as e:<br>
+        print(f"Error al insertar en la tabla: {e}")<br>
+    finally:<br>
+        conn.close()<br>
+
+    </p>
+    <img src="Captura de pantalla 2024-12-03 175702.png" alt="">
+
+    <h1>buscado de un registro en la db por python</h1>
+
+    <p>
+        por medio de funciones hacemos una ejecucion sql para hacer una busqueda en nuestra tabla de impacto estrategico
+    </p>
+    <p>
+        try: <br>
+        conn = sql.connect("autoconocimientoJesusAldayrRamirezErazo.db")<br>
+        cursor = conn.cursor()<br>
+        <br>
+        # Construir la consulta base<br>
+        query = "SELECT * FROM strategic_impact WHERE 1=1"<br>
+        params = []<br>
+        <br>
+        # Agregar filtros opcionales<br>
+        if impact_id is not None:<br>
+            query += " AND impact_id = ?"<br>
+            params.append(impact_id)<br>
+        cursor.execute(query, params)<br>
+        results = cursor.fetchall()<br>
+        <br>
+        # Mostrar resultados<br>
+        if results:<br>
+            print("Resultados encontrados:")<br>
+            for row in results:<br>
+                print(f"ID: {row[0]}, Plan ID: {row[1]}, Área: {row[2]}, Esperado: {row[3]}, Real: {row[4]}, Puntuación: {row[5]}")<br>
+        else:<br>
+            print("No se encontraron registros.")<br>
+            <br>
+    except sql.Error as e:<br>
+        print(f"Error al buscar en la tabla: {e}")<br>
+    finally:<br>
+        conn.close()<br>
+
+    </p>
+    <img src="Captura de pantalla 2024-12-03 175303.png" alt="">
+</body>
+</html>
