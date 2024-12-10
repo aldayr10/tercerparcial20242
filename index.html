@@ -117,5 +117,125 @@
 
     </p>
     <img src="Captura de pantalla 2024-12-03 175303.png" alt="">
+
+    <h1>editar de un registro en la db por python</h1>
+
+    <p>
+        por medio de funciones hacemos una ejecucion sql para hacer una update en nuestra tabla de impacto estrategico
+    </p>
+    <p>
+        def editarImpacto(impact_id, plan_id=None, impact_area=None, expected_outcome=None, actual_outcome=None, impact_score=None): <br>
+    try:<br>
+        conn = sql.connect("autoconocimientoJesusAldayrRamirezErazo.db")<br>
+        cursor = conn.cursor()<br>
+        <br>
+        # Crear una lista de campos y valores a actualizar<br>
+        campos_a_actualizar = []<br>
+        valores = []<br>
+        <br>
+        if plan_id is not None:<br>
+            campos_a_actualizar.append("plan_id = ?")<br>
+            valores.append(plan_id)<br>
+        if impact_area is not None:<br>
+            campos_a_actualizar.append("impact_area = ?")<br>
+            valores.append(impact_area)<br>
+        if expected_outcome is not None:<br>
+            campos_a_actualizar.append("expected_outcome = ?")<br>
+            valores.append(expected_outcome)<br>
+        if actual_outcome is not None:<br>
+            campos_a_actualizar.append("actual_outcome = ?")<br>
+            valores.append(actual_outcome)<br>
+        if impact_score is not None:<br>
+            campos_a_actualizar.append("impact_score = ?")<br>
+            valores.append(impact_score)<br>
+            <br>
+        # Si no hay cambios, salimos<br>
+        if not campos_a_actualizar:<br>
+            print("No se proporcionaron campos para actualizar.")<br>
+            return<br>
+
+        # Agregar el identificador al final de los valores<br>
+        valores.append(impact_id)<br>
+        <br>
+        # Crear el comando SQL dinámicamente<br>
+        comando_sql = f"""<br>
+        UPDATE strategic_impact<br>
+        SET {', '.join(campos_a_actualizar)}<br>
+        WHERE impact_id = ?<br>
+        """<br>
+        <br>
+        # Ejecutar la consulta<br>
+        cursor.execute(comando_sql, valores)<br>
+        conn.commit()<br>
+        <br>
+        if cursor.rowcount > 0:<br>
+            print("Registro actualizado correctamente")<br>
+        else:<br>
+            print("No se encontró un registro con el impact_id proporcionado.")<br>
+            <br>
+    except sql.Error as e:<br>
+        print(f"Error al actualizar la tabla: {e}")<br>
+    finally:<br>
+        conn.close()<br>
+
+
+    </p>
+    <img src="Captura de pantalla 2024-12-10 150728.png" alt="">
+
+    <h1>eliminar un Registro tabla con python</h1>
+
+    <p>
+        nos permite elimiar un registro por medio del id
+    </p>
+    <p>
+        import time<br>
+        import sqlite3 as sql <br>
+        def createTeable():<br>
+        conn=sql.connect("autoconocimiento.db")<br>
+        cursor= conn.cursor()<br>
+        cursor.execute("""<br>
+        CREATE TABLE strategic_impact (<br>
+        impact_id INTEGER PRIMARY KEY AUTOINCREMENT,<br>
+        plan_id INTEGER,<br>
+        impact_area TEXT,<br>
+        expected_outcome TEXT,<br>
+        actual_outcome TEXT,<br>
+        impact_score INTEGER CHECK (impact_score BETWEEN 1 AND 10),<br>
+        FOREIGN KEY (plan_id) REFERENCES strategic_plan(plan_id)<br>
+        );<br>
+        """)<br>
+        conn.commit()<br>
+        print("Tabla creada")<br>
+        conn.close()<br>
+    </p>
+    <img src="Captura de pantalla 2024-12-03 162755.png" alt="">
+
+    <h1>traer todos los Registros tabla con python</h1>
+
+    <p>
+        nos permite mostrar todos los registros por medio del id
+    </p>
+    <p>
+        import time<br>
+        import sqlite3 as sql <br>
+        def createTeable():<br>
+        conn=sql.connect("autoconocimiento.db")<br>
+        cursor= conn.cursor()<br>
+        cursor.execute("""<br>
+        CREATE TABLE strategic_impact (<br>
+        impact_id INTEGER PRIMARY KEY AUTOINCREMENT,<br>
+        plan_id INTEGER,<br>
+        impact_area TEXT,<br>
+        expected_outcome TEXT,<br>
+        actual_outcome TEXT,<br>
+        impact_score INTEGER CHECK (impact_score BETWEEN 1 AND 10),<br>
+        FOREIGN KEY (plan_id) REFERENCES strategic_plan(plan_id)<br>
+        );<br>
+        """)<br>
+        conn.commit()<br>
+        print("Tabla creada")<br>
+        conn.close()<br>
+    </p>
+    <img src="Captura de pantalla 2024-12-10 154033.png" alt="">
 </body>
 </html>
